@@ -4,9 +4,11 @@ using UnityEngine;
 
 [RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Tyres))]
 public class CarController : MonoBehaviour
 {
     public InputManager im;
+    public Tyres ty;
     public List<WheelCollider> throttleWheels;
     public List<GameObject> steeringWheels;
 
@@ -24,6 +26,7 @@ public class CarController : MonoBehaviour
     {
         im = GetComponent<InputManager>();
         rb = GetComponent<Rigidbody>();
+        ty = GetComponent<Tyres>();
 
         if (CM)
         {
@@ -31,40 +34,53 @@ public class CarController : MonoBehaviour
         }
     }
 
-
-    // Called once per frame
     private void FixedUpdate()
     {
+        
         foreach(WheelCollider wheel in throttleWheels)
         {
             if (im.brake)
             {
                 wheel.motorTorque = 0f;
-                wheel.brakeTorque = brakeStrength * Time.deltaTime;
+                wheel.brakeTorque = brakeStrength;
+
             } else
             {
                 wheel.motorTorque = strengthCoeffecient * Time.deltaTime * im.throttle;
                 wheel.brakeTorque = 0f;
             }
+
+            ty.ApplyFriction(wheel);
         }
 
         foreach (GameObject wheel in steeringWheels)
         {
+            if (im.brake)
+            {
+                wheel.GetComponent<WheelCollider>().brakeTorque = brakeStrength;
+            }
+            else
+            {
+                wheel.GetComponent<WheelCollider>().brakeTorque = 0f;
+            }
+
             wheel.GetComponent<WheelCollider>().steerAngle = maxTurn * im.steer;
             wheel.transform.localEulerAngles = new Vector3(0f, maxTurn * im.steer, 0f);
+
+            ty.ApplyFriction(wheel.GetComponent<WheelCollider>());
+
         }
 
         //Left and right have been separated because their positive rotation directions are the opposite of eachother.
         foreach (GameObject wheel in rightWheels)
         {
-            wheel.transform.Rotate(rb.velocity.magnitude * (transform.InverseTransformDirection(rb.velocity).z >= 0 ? 1 : -1) / (2 * Mathf.PI * 0.33f), 0f, 0f);
+            wheel.transform.Rotate(wheel.transform.parent.GetComponent<WheelCollider>().rpm / 60 * 360 * Time.deltaTime, 0, 0);
         }
 
         foreach (GameObject wheel in leftWheels)
         {
-            wheel.transform.Rotate(rb.velocity.magnitude * (transform.InverseTransformDirection(rb.velocity).z >= 0 ? -1 : 1) / (2 * Mathf.PI * 0.33f), 0f, 0f);
+            wheel.transform.Rotate(wheel.transform.parent.GetComponent<WheelCollider>().rpm / 60 * -360 * Time.deltaTime, 0, 0);
         }
-
 
     }
 }
