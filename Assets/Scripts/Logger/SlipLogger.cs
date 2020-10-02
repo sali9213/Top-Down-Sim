@@ -14,7 +14,7 @@ public class SlipLogger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach(WheelCollider wheel in Wheels)
+        foreach (WheelCollider wheel in Wheels)
         {
             switch (wheel.gameObject.name)
             {
@@ -39,8 +39,19 @@ public class SlipLogger : MonoBehaviour
 
     string GetSlipValues(WheelCollider wheel)
     {
-        string slipValues = " " + gameObject.GetComponent<Rigidbody>().velocity.magnitude.ToString("n2") + " " + wheel.motorTorque + " " + wheel.brakeTorque;
+        string slipValues = "";
+        if (wheel.GetGroundHit(out WheelHit hit))
+        {
+            slipValues = " " + hit.forwardSlip.ToString("n2") + " " + wheel.motorTorque.ToString("n0") + " " + wheel.rpm.ToString("n0") + " " +  GetSpeed();
+        }
         return slipValues;
 
+    }
+
+    string GetSpeed()
+    {
+        float velocity = gameObject.GetComponent<Rigidbody>().velocity.magnitude;
+        float speed = (velocity / 1000) * 3600;
+        return speed.ToString("n0");
     }
 }

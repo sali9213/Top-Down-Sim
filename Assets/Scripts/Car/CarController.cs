@@ -5,10 +5,12 @@ using UnityEngine;
 [RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Tyres))]
+[RequireComponent(typeof(Engine))]
 public class CarController : MonoBehaviour
 {
     public InputManager im;
     public Tyres ty;
+    public Engine engine;
     public List<WheelCollider> throttleWheels;
     public List<GameObject> steeringWheels;
 
@@ -27,6 +29,7 @@ public class CarController : MonoBehaviour
         im = GetComponent<InputManager>();
         rb = GetComponent<Rigidbody>();
         ty = GetComponent<Tyres>();
+        engine = GetComponent<Engine>();
 
         if (CM)
         {
@@ -46,12 +49,15 @@ public class CarController : MonoBehaviour
 
             } else
             {
-                wheel.motorTorque = strengthCoeffecient * Time.deltaTime * im.throttle;
+                wheel.motorTorque = engine.GetTorque(im.throttle) * 3.91f * 3.44f;
+                //wheel.motorTorque = strengthCoeffecient * im.throttle * Time.deltaTime;
                 wheel.brakeTorque = 0f;
             }
 
             ty.ApplyFriction(wheel);
         }
+
+        engine.SetEngineRPM(throttleWheels[0].rpm);
 
         foreach (GameObject wheel in steeringWheels)
         {
