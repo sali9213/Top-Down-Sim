@@ -274,7 +274,7 @@ Rigidbody:
   m_GameObject: {fileID: 1313627127019714}
   serializedVersion: 2
   m_Mass: 1875
-  m_Drag: 0.1
+  m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -296,18 +296,14 @@ MonoBehaviour:
   im: {fileID: 133529379}
   ty: {fileID: 0}
   engine: {fileID: 0}
+  trans: {fileID: 0}
+  aero: {fileID: 0}
   throttleWheels:
   - {fileID: 219725938}
   - {fileID: 306472663}
   steeringWheels:
-  - {fileID: 255012489}
-  - {fileID: 674719849}
-  leftWheels:
-  - {fileID: 1322243114880444}
-  - {fileID: 1888703884980760}
-  rightWheels:
-  - {fileID: 1999282939694006}
-  - {fileID: 1368489242873222}
+  - {fileID: 255012491}
+  - {fileID: 674719851}
   strengthCoeffecient: 200000
   maxTurn: 20
   CM: {fileID: 1387112177}
@@ -375,7 +371,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 15
+  m_Mass: 10
   m_WheelDampingRate: 0.0001
   m_ForwardFriction:
     m_ExtremumSlip: 0.15
@@ -437,7 +433,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 15
+  m_Mass: 10
   m_WheelDampingRate: 0.0001
   m_ForwardFriction:
     m_ExtremumSlip: 0.15
@@ -499,7 +495,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 15
+  m_Mass: 10
   m_WheelDampingRate: 0.0001
   m_ForwardFriction:
     m_ExtremumSlip: 0.15
@@ -733,7 +729,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 15
+  m_Mass: 10
   m_WheelDampingRate: 0.0001
   m_ForwardFriction:
     m_ExtremumSlip: 0.15
@@ -777,7 +773,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0.5
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.802082
@@ -816,7 +812,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1097,8 +1093,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.18910751, y: -0, z: -0, w: 0.9819565}
-  m_LocalPosition: {x: 0, y: 2, z: -5}
+  m_LocalRotation: {x: 0.03522361, y: 0.706229, z: -0.03522361, w: 0.706229}
+  m_LocalPosition: {x: -5, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4012107457784640}
@@ -1116,9 +1112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c7f63e9036b4cceb7eb195aa0878cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  X: 0
-  Y: 2
-  Z: -5
+  X: -5
+  Y: 0.5
+  Z: 0
 --- !u!1 &981899074
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,7 +1215,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387112176}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
+  m_LocalPosition: {x: 0, y: 0.141, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4012107457784640}
@@ -1288,7 +1284,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -1624,6 +1620,8 @@ GameObject:
   - component: {fileID: 1313627127019715}
   - component: {fileID: 1313627127019716}
   - component: {fileID: 1313627127019717}
+  - component: {fileID: 1313627127019719}
+  - component: {fileID: 1313627127019718}
   m_Layer: 0
   m_Name: car 1203 black
   m_TagString: Untagged
@@ -1666,7 +1664,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frontTyreGrip: 1.1
   rearTyreGrip: 1.1
-  friction: 10
+  friction: 0
+  rollingResistanceConstant: 0
   frontWheels:
   - {fileID: 255012491}
   - {fileID: 674719851}
@@ -1688,11 +1687,51 @@ MonoBehaviour:
   IDLERpm: 1000
   IDLERpmTorque: 275
   PeakTorqueRPM: 5200
-  PeakTorqueRPMTorque: 450
+  PeakTorqueRPMTorque: 470
   MaxRPM: 7500
   MaxRPMTorque: 313
   CurrentRPM: 0
   currentTorque: 0
+  torqueCurveRPM: []
+  torqueCurveTorque: []
+--- !u!114 &1313627127019718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313627127019714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0c7eb0329c9d42b0a8c2894ef35cebd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstGearRatio: 3.91
+  secondGearRatio: 2.29
+  thirdGearRatio: 1.58
+  fourthGearRatio: 1.18
+  fifthGearRatio: 0.94
+  sixthGearRatio: 0.79
+  seventhGearRatio: 0.62
+  eighthGearRatio: 0
+  finalDrive: 3.44
+  transmissionEffeciency: 1
+  CurrentGear: 1
+--- !u!114 &1313627127019719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313627127019714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a046a2db55af4ffc98005feaf87e769, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragCoefficient: 0.29
+  frontalArea: 2.02
+  dragConstant: 0
 --- !u!1 &1322243114880444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1723,6 +1762,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheelC: {fileID: 255012491}
+  flipRotation: 1
 --- !u!1 &1332906301394442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,6 +1811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheelC: {fileID: 674719851}
+  flipRotation: 0
 --- !u!1 &1400378729226896
 GameObject:
   m_ObjectHideFlags: 0
@@ -2071,6 +2112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheelC: {fileID: 219725938}
+  flipRotation: 1
 --- !u!1 &1947551861728458
 GameObject:
   m_ObjectHideFlags: 0
@@ -2137,6 +2179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheelC: {fileID: 306472663}
+  flipRotation: 0
 --- !u!4 &4012107457784640
 Transform:
   m_ObjectHideFlags: 0

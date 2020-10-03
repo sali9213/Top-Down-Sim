@@ -6,16 +6,18 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Tyres))]
 [RequireComponent(typeof(Engine))]
+[RequireComponent(typeof(Transmission))]
+[RequireComponent(typeof(Aerodynamics))]
 public class CarController : MonoBehaviour
 {
     public InputManager im;
     public Tyres ty;
     public Engine engine;
-    public List<WheelCollider> throttleWheels;
-    public List<GameObject> steeringWheels;
+    public Transmission trans;
+    public Aerodynamics aero;
 
-    public List<GameObject> leftWheels;
-    public List<GameObject> rightWheels;
+    public List<WheelCollider> throttleWheels;
+    public List<WheelCollider> steeringWheels;
 
     public float strengthCoeffecient = 20000f;
     public float maxTurn = 20f;
@@ -30,6 +32,8 @@ public class CarController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         ty = GetComponent<Tyres>();
         engine = GetComponent<Engine>();
+        trans = GetComponent<Transmission>();
+        aero = GetComponent<Aerodynamics>();
 
         if (CM)
         {
@@ -39,6 +43,8 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        float engineTorque = engine.GetTorque(im.throttle);
+        float wheelTorque = trans.GetTorque(engineTorque);
         
         foreach(WheelCollider wheel in throttleWheels)
         {
@@ -49,44 +55,38 @@ public class CarController : MonoBehaviour
 
             } else
             {
-                wheel.motorTorque = engine.GetTorque(im.throttle) * 3.91f * 3.44f;
-                //wheel.motorTorque = strengthCoeffecient * im.throttle * Time.deltaTime;
+                wheel.motorTorque = wheelTorque/2;
                 wheel.brakeTorque = 0f;
             }
 
-            ty.ApplyFriction(wheel);
         }
 
-        engine.SetEngineRPM(throttleWheels[0].rpm);
+        // Set engine rpm according to wheel rpm, gear ratio and final drive ratio.
+        engine.SetEngineRPM(trans.GetEngineRPM(throttleWheels[0].rpm));
 
-        foreach (GameObject wheel in steeringWheels)
+        foreach (WheelCollider wheel in steeringWheels)
         {
             if (im.brake)
             {
-                wheel.GetComponent<WheelCollider>().brakeTorque = brakeStrength;
+                wheel.brakeTorque = brakeStrength;
             }
             else
             {
-                wheel.GetComponent<WheelCollider>().brakeTorque = 0f;
+                wheel.brakeTorque = 0f;
             }
 
-            wheel.GetComponent<WheelCollider>().steerAngle = maxTurn * im.steer;
-            wheel.transform.localEulerAngles = new Vector3(0f, maxTurn * im.steer, 0f);
-
-            ty.ApplyFriction(wheel.GetComponent<WheelCollider>());
+            wheel.steerAngle = maxTurn * im.steer;
+            wheel.gameObject.transform.localEulerAngles = new Vector3(0f, maxTurn * im.steer, 0f);
 
         }
 
-        //Left and right have been separated because their positive rotation directions are the opposite of eachother.
-        foreach (GameObject wheel in rightWheels)
-        {
-            wheel.transform.Rotate(wheel.transform.parent.GetComponent<WheelCollider>().rpm / 60 * 360 * Time.deltaTime, 0, 0);
-        }
+        // Apply aero drag
+        aero.ApplyDrag();
+    }
 
-        foreach (GameObject wheel in leftWheels)
-        {
-            wheel.transform.Rotate(wheel.transform.parent.GetComponent<WheelCollider>().rpm / 60 * -360 * Time.deltaTime, 0, 0);
-        }
-
+    private void Update()
+    {
+        if (Input.GetButtonDown("ShiftUp")) trans.ShiftUp();
+        if (Input.GetButtonDown("ShiftDown")) trans.ShiftDown();
     }
 }

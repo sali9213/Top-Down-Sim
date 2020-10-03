@@ -7,12 +7,16 @@ public class Tyres : MonoBehaviour
     [SerializeField] private float frontTyreGrip = 1;
     [SerializeField] private float rearTyreGrip = 1;
     [SerializeField] private float friction = 1;
+    [SerializeField] private float rollingResistanceConstant;
 
     [SerializeField] private WheelCollider[] frontWheels;
     [SerializeField] private WheelCollider[] rearWheels;
+
+    private Rigidbody rb;
    
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
         // Forward WFC for front wheels
         WheelFrictionCurve frontForwardFriction = new WheelFrictionCurve();
         frontForwardFriction.extremumSlip = 1.0f;
@@ -47,25 +51,31 @@ public class Tyres : MonoBehaviour
 
         foreach (WheelCollider wheel in frontWheels)
         {
-            wheel.ConfigureVehicleSubsteps(30, 20, 40);
+            wheel.ConfigureVehicleSubsteps(30, 8, 20);
             wheel.forwardFriction = frontForwardFriction;
             wheel.sidewaysFriction = frontSidewaysFriction;
         }
 
         foreach(WheelCollider wheel in rearWheels)
         {
-            wheel.ConfigureVehicleSubsteps(30, 20, 40);
+            wheel.ConfigureVehicleSubsteps(30, 8, 20);
             wheel.forwardFriction = rearForwardFriction;
             wheel.sidewaysFriction = rearSidewaysFriction;
         }
-        
+
+        new WaitForSeconds(1);
+
+        // Rolling resistance is 30 * dragConstant.
+        rollingResistanceConstant = gameObject.GetComponent<Aerodynamics>().GetDragConstant() * 30;
     }
 
-    public void ApplyFriction(WheelCollider wheel)
+    // Apply rolling resistance to vehicle rigidbody.
+    public void ApplyRollingResistance(/*WheelCollider wheel*/)
     {
-        if(Mathf.Abs(wheel.rpm) > 100)
-        {
-            wheel.brakeTorque += friction;
-        }
+        float vel = rb.velocity.magnitude;
+        float resistanceForce = rollingResistanceConstant * vel;
+        if (vel < 0.0f)
+            resistanceForce = -resistanceForce;
+        rb.AddRelativeForce(0.0f, 0.0f, -resistanceForce, ForceMode.Force);
     }
 }

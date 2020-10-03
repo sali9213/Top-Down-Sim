@@ -6,32 +6,27 @@ public class Engine : MonoBehaviour
 {
     //Engine properties.
     [SerializeField] private float IDLERpm = 1000f;
-    [SerializeField] private float IDLERpmTorque = 275f;
-    [SerializeField] private float PeakTorqueRPM = 5200f;
-    [SerializeField] private float PeakTorqueRPMTorque = 450f;
     [SerializeField] private float MaxRPM = 7500f;
-    [SerializeField] private float MaxRPMTorque = 313f;
 
     // Should not be serialized (serialized for development purposes only and will be removed later)
     [SerializeField] private float CurrentRPM;
     [SerializeField] private float currentTorque;
 
-    // Gradient
-    private float PrePeakTorqueRPM_M;
-    // Y-Intercept
-    private float PrePeakTorqueRPM_C;
-
-    private float PostPeakTorqueRPM_M;
-    private float PostPeakTorqueRPM_C;
+    [SerializeField] private float[] torqueCurveRPM;
+    [SerializeField] private float[] torqueCurveTorque;
 
     // Start is called before the first frame update
     void Start()
     {
-        CalculatePrePeakTorqueLine();
-        CalculatePostPeakTorqueLine();
+        if (torqueCurveRPM.Length > 0)
+        {
+            IDLERpm = torqueCurveRPM[0];
+            MaxRPM = torqueCurveRPM[torqueCurveRPM.Length - 1];
+            CurrentRPM = IDLERpm;
+        }
     }
 
-    void FixedUpdate()
+    void Update()
     {
         // make sure rpm does not drop below the idle rpm or go above the max rpm.
         if (CurrentRPM < IDLERpm) CurrentRPM = IDLERpm;
@@ -40,53 +35,54 @@ public class Engine : MonoBehaviour
 
     public float GetTorque(float throttle)
     {
-        if(CurrentRPM < PeakTorqueRPM)
+        float immediateTorque = 0f;
+
+        if (CurrentRPM >= MaxRPM)
         {
-            currentTorque =  ((PrePeakTorqueRPM_M * CurrentRPM) + PrePeakTorqueRPM_C) * throttle;
-            return currentTorque;
-        }
-        else
+            return 0f;
+
+        } else
         {
-            if (CurrentRPM >= MaxRPM)
+            for(int i = 0; i < torqueCurveRPM.Length; i++)
             {
-                return 0f;
-            }
-            else
-            {
-                currentTorque = ((PostPeakTorqueRPM_M * CurrentRPM) + PostPeakTorqueRPM_C) * throttle;
-                return currentTorque;
+                if(CurrentRPM == torqueCurveRPM[i])
+                {
+                    immediateTorque = torqueCurveTorque[i] * throttle;
+                    break;
+                }
+
+                if(CurrentRPM < torqueCurveRPM[i])
+                {
+                    // Calculate torque by calculating where the current rpm sits in the rpm array and use that to calculate the torque.
+
+                    float excessRPM = CurrentRPM - torqueCurveRPM[i - 1];
+                    float interval = torqueCurveRPM[i] - torqueCurveRPM[i - 1];
+                    float excessPercentage = excessRPM / interval;
+                    float torqueInterval = torqueCurveTorque[i-1] - torqueCurveTorque[i];
+
+                    immediateTorque = (torqueCurveTorque[i-1] + (torqueInterval * excessPercentage)) * throttle;
+                    break;
+                }
             }
         }
 
+        currentTorque = immediateTorque;
+        return immediateTorque;
+
     }
 
-    private void CalculatePrePeakTorqueLine()
+    public void SetEngineRPM(float RPM)
     {
-        float gradient = (PeakTorqueRPMTorque - IDLERpmTorque) / (PeakTorqueRPM - IDLERpm);
-        PrePeakTorqueRPM_M = gradient;
-        PrePeakTorqueRPM_C = PeakTorqueRPMTorque - (gradient * PeakTorqueRPM);
-    }
-
-    private void CalculatePostPeakTorqueLine()
-    {
-        float gradient = (MaxRPMTorque - PeakTorqueRPMTorque) / (MaxRPM - PeakTorqueRPM);
-        PostPeakTorqueRPM_M = gradient;
-        PostPeakTorqueRPM_C = PeakTorqueRPMTorque - (gradient * PeakTorqueRPM);
-    }
-
-    public void SetEngineRPM(float wheelRPM)
-    {
-        wheelRPM = wheelRPM * 3.91f * 3.44f;
-        if (wheelRPM < IDLERpm)
+        if (RPM < IDLERpm)
         {
             CurrentRPM = IDLERpm;
         }
-        else if (wheelRPM > MaxRPM)
+        else if (RPM > MaxRPM)
         {
             CurrentRPM = MaxRPM;
         } else
         {
-            CurrentRPM = wheelRPM;
+            CurrentRPM = RPM;
         }
             
     }
