@@ -1622,6 +1622,7 @@ GameObject:
   - component: {fileID: 1313627127019717}
   - component: {fileID: 1313627127019719}
   - component: {fileID: 1313627127019718}
+  - component: {fileID: 1313627127019720}
   m_Layer: 0
   m_Name: car 1203 black
   m_TagString: Untagged
@@ -1685,15 +1686,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IDLERpm: 1000
-  IDLERpmTorque: 275
-  PeakTorqueRPM: 5200
-  PeakTorqueRPMTorque: 470
   MaxRPM: 7500
-  MaxRPMTorque: 313
   CurrentRPM: 0
   currentTorque: 0
-  torqueCurveRPM: []
-  torqueCurveTorque: []
+  torqueCurveRPM:
+  - 1000
+  - 1500
+  - 2000
+  - 2500
+  - 3000
+  - 3500
+  - 4000
+  - 4500
+  - 5000
+  - 5500
+  - 6000
+  - 6500
+  - 7000
+  - 7500
+  torqueCurveTorque:
+  - 286.8
+  - 430.2
+  - 501.9
+  - 530
+  - 530
+  - 530
+  - 530
+  - 530
+  - 530
+  - 525.1
+  - 510.6
+  - 486.3
+  - 451.5
+  - 379.3
 --- !u!114 &1313627127019718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1731,7 +1756,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragCoefficient: 0.29
   frontalArea: 2.02
-  dragConstant: 0
+--- !u!114 &1313627127019720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313627127019714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a4b32b13b6d54cf5a74cf11ca88b734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontWheels:
+  - {fileID: 255012491}
+  - {fileID: 674719851}
+  rearWheels:
+  - {fileID: 219725938}
+  - {fileID: 306472663}
+  wheelRadiusFrontInches: 12.9921
+  wheelRadiusRearInches: 12.9921
 --- !u!1 &1322243114880444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1758,7 +1802,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1322243114880444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 484ff3ab080494cbaac2abf439809dbf, type: 3}
+  m_Script: {fileID: 11500000, guid: a526215851d444ffcb6fffaff1850e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wheelC: {fileID: 255012491}
@@ -1807,7 +1851,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1368489242873222}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 484ff3ab080494cbaac2abf439809dbf, type: 3}
+  m_Script: {fileID: 11500000, guid: a526215851d444ffcb6fffaff1850e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wheelC: {fileID: 674719851}
@@ -2108,7 +2152,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1888703884980760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 484ff3ab080494cbaac2abf439809dbf, type: 3}
+  m_Script: {fileID: 11500000, guid: a526215851d444ffcb6fffaff1850e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wheelC: {fileID: 219725938}
@@ -2175,7 +2219,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1999282939694006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 484ff3ab080494cbaac2abf439809dbf, type: 3}
+  m_Script: {fileID: 11500000, guid: a526215851d444ffcb6fffaff1850e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wheelC: {fileID: 306472663}

@@ -3,7 +3,7 @@ using System.Collections;
 
 // This script ensures that the wheels follow the position of the wheel colliders making it look like the wheel has suspension
 
-public class Wheel : MonoBehaviour
+public class WheelSync : MonoBehaviour
 {
 
     public WheelCollider wheelC;
