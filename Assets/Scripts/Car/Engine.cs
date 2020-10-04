@@ -58,7 +58,7 @@ public class Engine : MonoBehaviour
                     float excessRPM = CurrentRPM - torqueCurveRPM[i - 1];
                     float interval = torqueCurveRPM[i] - torqueCurveRPM[i - 1];
                     float excessPercentage = excessRPM / interval;
-                    float torqueInterval = torqueCurveTorque[i-1] - torqueCurveTorque[i];
+                    float torqueInterval = torqueCurveTorque[i] - torqueCurveTorque[i-1];
 
                     immediateTorque = (torqueCurveTorque[i-1] + (torqueInterval * excessPercentage)) * throttle;
                     break;

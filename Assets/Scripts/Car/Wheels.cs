@@ -13,6 +13,7 @@ public class Wheels : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Set wheel radius
         foreach(WheelCollider wheel in frontWheels)
         {
             wheel.radius = inchesToM(wheelRadiusFrontInches);
