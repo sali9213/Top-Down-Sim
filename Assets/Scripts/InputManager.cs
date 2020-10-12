@@ -6,13 +6,13 @@ public class InputManager : MonoBehaviour
 {
     public float throttle;
     public float steer;
-    public bool brake;
+    public float brakes;
 
     // Update is called once per frame
     void Update()
     {
-        throttle = Input.GetAxis("Vertical");
+        throttle = Input.GetAxis("Throttle");
+        brakes = Input.GetAxis("Brakes");
         steer = Input.GetAxis("Horizontal");
-        brake = Input.GetKey(KeyCode.Space);
     }
 }

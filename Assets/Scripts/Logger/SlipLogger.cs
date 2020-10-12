@@ -42,7 +42,7 @@ public class SlipLogger : MonoBehaviour
         string slipValues = "";
         if (wheel.GetGroundHit(out WheelHit hit))
         {
-            slipValues = " " + hit.forwardSlip.ToString("n2") + " " + wheel.motorTorque.ToString("n0") + " " + wheel.rpm.ToString("n0") + " " +  GetSpeed();
+            slipValues = " " + hit.forwardSlip.ToString("n2") + " " + wheel.brakeTorque.ToString("n0") + " " + wheel.rpm.ToString("n0") + " " +  GetSpeed();
         }
         return slipValues;
 

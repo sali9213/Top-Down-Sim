@@ -29,16 +29,19 @@ public class Engine : MonoBehaviour
     void Update()
     {
         // make sure rpm does not drop below the idle rpm or go above the max rpm.
-        if (CurrentRPM < IDLERpm) CurrentRPM = IDLERpm;
-        if (CurrentRPM > MaxRPM) CurrentRPM = MaxRPM;
+        //if (CurrentRPM < IDLERpm) CurrentRPM = IDLERpm;
+        //if (CurrentRPM > MaxRPM) CurrentRPM = MaxRPM;
     }
 
     public float GetTorque(float throttle)
     {
         float immediateTorque = 0f;
+        if (throttle < 0f)
+            return 0f;
 
         if (CurrentRPM >= MaxRPM)
         {
+            // Wheels shouldnt get any torque if rev limit is being hit.
             return 0f;
 
         } else
@@ -73,6 +76,7 @@ public class Engine : MonoBehaviour
 
     public void SetEngineRPM(float RPM)
     {
+        CurrentRPM = RPM;
         if (RPM < IDLERpm)
         {
             CurrentRPM = IDLERpm;
@@ -80,9 +84,6 @@ public class Engine : MonoBehaviour
         else if (RPM > MaxRPM)
         {
             CurrentRPM = MaxRPM;
-        } else
-        {
-            CurrentRPM = RPM;
         }
             
     }

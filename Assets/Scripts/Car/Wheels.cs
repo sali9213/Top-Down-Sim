@@ -30,4 +30,14 @@ public class Wheels : MonoBehaviour
     {
         return (inches * 2.54f) / 100;
     }
+
+    public WheelCollider[] GetFrontWheels()
+    {
+        return frontWheels;
+    }
+
+    public WheelCollider[] GetRearWheels()
+    {
+        return rearWheels;
+    }
 }

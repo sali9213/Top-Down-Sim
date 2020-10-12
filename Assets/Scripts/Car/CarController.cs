@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(Engine))]
 [RequireComponent(typeof(Transmission))]
 [RequireComponent(typeof(Aerodynamics))]
+[RequireComponent(typeof(Brakes))]
 public class CarController : MonoBehaviour
 {
     public InputManager im;
@@ -15,6 +16,7 @@ public class CarController : MonoBehaviour
     public Engine engine;
     public Transmission trans;
     public Aerodynamics aero;
+    public Brakes brakes;
 
     public List<WheelCollider> throttleWheels;
     public List<WheelCollider> steeringWheels;
@@ -34,6 +36,7 @@ public class CarController : MonoBehaviour
         engine = GetComponent<Engine>();
         trans = GetComponent<Transmission>();
         aero = GetComponent<Aerodynamics>();
+        brakes = GetComponent<Brakes>();
 
         if (CM)
         {
@@ -43,38 +46,21 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float engineTorque = engine.GetTorque(im.throttle);
-        float wheelTorque = trans.GetTorque(engineTorque);
-        
-        foreach(WheelCollider wheel in throttleWheels)
-        {
-            if (im.brake)
-            {
-                wheel.motorTorque = 0f;
-                wheel.brakeTorque = brakeStrength;
-
-            } else
-            {
-                wheel.motorTorque = wheelTorque/2;
-                wheel.brakeTorque = 0f;
-            }
-
-        }
-
         // Set engine rpm according to wheel rpm, gear ratio and final drive ratio.
         engine.SetEngineRPM(trans.GetEngineRPM(throttleWheels[0].rpm));
+        float engineTorque = engine.GetTorque(im.throttle);
+        float wheelTorque = trans.GetTorque(engineTorque);
+        brakes.ApplyBrakes(im.brakes);
+
+        foreach(WheelCollider wheel in throttleWheels)
+        {
+            wheel.motorTorque = wheelTorque/throttleWheels.Count;
+        }
+
+
 
         foreach (WheelCollider wheel in steeringWheels)
         {
-            if (im.brake)
-            {
-                wheel.brakeTorque = brakeStrength;
-            }
-            else
-            {
-                wheel.brakeTorque = 0f;
-            }
-
             wheel.steerAngle = maxTurn * im.steer;
             wheel.gameObject.transform.localEulerAngles = new Vector3(0f, maxTurn * im.steer, 0f);
 

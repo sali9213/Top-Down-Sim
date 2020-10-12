@@ -273,9 +273,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313627127019714}
   serializedVersion: 2
-  m_Mass: 1875
+  m_Mass: 1645
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -298,9 +298,12 @@ MonoBehaviour:
   engine: {fileID: 0}
   trans: {fileID: 0}
   aero: {fileID: 0}
+  brakes: {fileID: 0}
   throttleWheels:
   - {fileID: 219725938}
   - {fileID: 306472663}
+  - {fileID: 255012491}
+  - {fileID: 674719851}
   steeringWheels:
   - {fileID: 255012491}
   - {fileID: 674719851}
@@ -323,7 +326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throttle: 0
   steer: 0
-  brake: 0
+  brakes: 0
 --- !u!1 &219725936
 GameObject:
   m_ObjectHideFlags: 0
@@ -1093,8 +1096,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.03522361, y: 0.706229, z: -0.03522361, w: 0.706229}
-  m_LocalPosition: {x: -5, y: 0.5, z: 0}
+  m_LocalRotation: {x: 0.16018222, y: -0, z: -0, w: 0.98708755}
+  m_LocalPosition: {x: 0, y: 2, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4012107457784640}
@@ -1112,9 +1115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c7f63e9036b4cceb7eb195aa0878cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  X: -5
-  Y: 0.5
-  Z: 0
+  X: 0
+  Y: 2
+  Z: -6
 --- !u!1 &981899074
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,6 +1626,7 @@ GameObject:
   - component: {fileID: 1313627127019719}
   - component: {fileID: 1313627127019718}
   - component: {fileID: 1313627127019720}
+  - component: {fileID: 1313627127019721}
   m_Layer: 0
   m_Name: car 1203 black
   m_TagString: Untagged
@@ -1731,15 +1735,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0c7eb0329c9d42b0a8c2894ef35cebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstGearRatio: 3.91
-  secondGearRatio: 2.29
-  thirdGearRatio: 1.58
-  fourthGearRatio: 1.18
-  fifthGearRatio: 0.94
-  sixthGearRatio: 0.79
-  seventhGearRatio: 0.62
-  eighthGearRatio: 0
-  finalDrive: 3.44
+  firstGearRatio: 4.89
+  secondGearRatio: 3.17
+  thirdGearRatio: 2.15
+  fourthGearRatio: 1.56
+  fifthGearRatio: 1.18
+  sixthGearRatio: 0.94
+  seventhGearRatio: 0.76
+  eighthGearRatio: 0.61
+  finalDrive: 3.12
   transmissionEffeciency: 1
   CurrentGear: 1
 --- !u!114 &1313627127019719
@@ -1754,8 +1758,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a046a2db55af4ffc98005feaf87e769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dragCoefficient: 0.29
-  frontalArea: 2.02
+  dragCoefficient: 0.3
+  frontalArea: 2.07
 --- !u!114 &1313627127019720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1774,8 +1778,25 @@ MonoBehaviour:
   rearWheels:
   - {fileID: 219725938}
   - {fileID: 306472663}
-  wheelRadiusFrontInches: 12.9921
-  wheelRadiusRearInches: 12.9921
+  wheelRadiusFrontInches: 13.5
+  wheelRadiusRearInches: 14
+--- !u!114 &1313627127019721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313627127019714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f69a68e0af0449b4a52280307c0d314, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontWheels: []
+  rearWheels: []
+  brakeBias: 0.6
+  maxDecel: 10
+  currentBrakeForce: 0
 --- !u!1 &1322243114880444
 GameObject:
   m_ObjectHideFlags: 0
