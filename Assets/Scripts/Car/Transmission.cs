@@ -20,7 +20,7 @@ public class Transmission : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gearRatios[0] = finalDrive;
+        gearRatios[0] = 0;
         gearRatios[1] = firstGearRatio;
         gearRatios[2] = secondGearRatio;
         gearRatios[3] = thirdGearRatio;
@@ -55,8 +55,10 @@ public class Transmission : MonoBehaviour
         return engineTorque * gearRatios[CurrentGear] * finalDrive * transmissionEffeciency;
     }
 
-    public float GetEngineRPM(float wheelRPM)
+    public float GetEngineRPM()
     {
+        WheelCollider[] wheels = GetComponent<Wheels>().GetRearWheels();
+        float wheelRPM = wheels[0].rpm > wheels[1].rpm ? wheels[0].rpm : wheels[1].rpm;
         return wheelRPM * gearRatios[CurrentGear] * finalDrive;
     }
 }

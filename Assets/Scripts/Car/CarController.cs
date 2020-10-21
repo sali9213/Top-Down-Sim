@@ -9,6 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(Transmission))]
 [RequireComponent(typeof(Aerodynamics))]
 [RequireComponent(typeof(Brakes))]
+[RequireComponent(typeof(Differential))]
 public class CarController : MonoBehaviour
 {
     public InputManager im;
@@ -17,15 +18,14 @@ public class CarController : MonoBehaviour
     public Transmission trans;
     public Aerodynamics aero;
     public Brakes brakes;
+    public Differential diff;
 
     public List<WheelCollider> throttleWheels;
     public List<WheelCollider> steeringWheels;
 
-    public float strengthCoeffecient = 20000f;
     public float maxTurn = 20f;
     public Transform CM;
     public Rigidbody rb;
-    public float brakeStrength = 200f;
 
     // Initialisation
     private void Start()
@@ -37,6 +37,7 @@ public class CarController : MonoBehaviour
         trans = GetComponent<Transmission>();
         aero = GetComponent<Aerodynamics>();
         brakes = GetComponent<Brakes>();
+        diff = GetComponent<Differential>();
 
         if (CM)
         {
@@ -47,17 +48,27 @@ public class CarController : MonoBehaviour
     private void FixedUpdate()
     {
         // Set engine rpm according to wheel rpm, gear ratio and final drive ratio.
-        engine.SetEngineRPM(trans.GetEngineRPM(throttleWheels[0].rpm));
+        engine.SetEngineRPM(trans.GetEngineRPM());
         float engineTorque = engine.GetTorque(im.throttle);
-        float wheelTorque = trans.GetTorque(engineTorque);
+        float transTorque = trans.GetTorque(engineTorque);
+        float[] wheelTorques = diff.DiffOutput(transTorque);
         brakes.ApplyBrakes(im.brakes);
 
-        foreach(WheelCollider wheel in throttleWheels)
+        //foreach(WheelCollider wheel in throttleWheels)
+        //{
+        //    wheel.motorTorque = wheelTorque/throttleWheels.Count;
+        //}
+
+        throttleWheels[0].motorTorque = wheelTorques[0];
+        throttleWheels[1].motorTorque = wheelTorques[1];
+
+        // Implement engine braking as brake torque to the wheels
+        if (im.throttle == 0f)
         {
-            wheel.motorTorque = wheelTorque/throttleWheels.Count;
+            float engineBrake = engine.GetEngineBrakeTorque();
+            throttleWheels[0].brakeTorque = engineBrake / 2;
+            throttleWheels[1].brakeTorque = engineBrake / 2;
         }
-
-
 
         foreach (WheelCollider wheel in steeringWheels)
         {
