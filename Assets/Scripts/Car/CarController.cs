@@ -52,7 +52,8 @@ public class CarController : MonoBehaviour
         float engineTorque = engine.GetTorque(im.throttle);
         float transTorque = trans.GetTorque(engineTorque);
         float[] wheelTorques = diff.DiffOutput(transTorque);
-        brakes.ApplyBrakes(im.brakes);
+        float engineBrake = engine.GetEngineBrakeTorque();
+        brakes.ApplyBrakes(im.brakes, engineBrake);
 
         //foreach(WheelCollider wheel in throttleWheels)
         //{
@@ -61,14 +62,6 @@ public class CarController : MonoBehaviour
 
         throttleWheels[0].motorTorque = wheelTorques[0];
         throttleWheels[1].motorTorque = wheelTorques[1];
-
-        // Implement engine braking as brake torque to the wheels
-        if (im.throttle == 0f)
-        {
-            float engineBrake = engine.GetEngineBrakeTorque();
-            throttleWheels[0].brakeTorque = engineBrake / 2;
-            throttleWheels[1].brakeTorque = engineBrake / 2;
-        }
 
         foreach (WheelCollider wheel in steeringWheels)
         {

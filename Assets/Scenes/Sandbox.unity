@@ -1691,7 +1691,7 @@ MonoBehaviour:
   IDLERpm: 1000
   MaxRPM: 7500
   engineBrakingOffset: 0
-  engineBrakingCoefficient: 1
+  engineBrakingCoefficient: 2
   CurrentRPM: 0
   currentTorque: 0
   currentEngineBrakingTorque: 0

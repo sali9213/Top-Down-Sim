@@ -21,7 +21,7 @@ public class Brakes : MonoBehaviour
         rearWheels = wheels.GetRearWheels();
     }
 
-    public void ApplyBrakes(float input)
+    public void ApplyBrakes(float input, float engineTorque)
     {
         float decel = maxDecel * input;
         float carMass = gameObject.GetComponent<Rigidbody>().mass;
@@ -30,8 +30,8 @@ public class Brakes : MonoBehaviour
         float frontBrakeForce = totalBrakeForce * brakeBias;
         float rearBrakeForce = totalBrakeForce - frontBrakeForce;
 
-        float frontBrakeTorque = (frontBrakeForce / 2) * frontWheels[0].radius;
-        float rearBrakeTorque = (rearBrakeForce / 2) * rearWheels[0].radius;
+        float frontBrakeTorque = ((frontBrakeForce / 2) * frontWheels[0].radius) + engineTorque / 2;
+        float rearBrakeTorque = ((rearBrakeForce / 2) * rearWheels[0].radius) + engineTorque / 2;
 
         foreach (var wheel in frontWheels)
         {
