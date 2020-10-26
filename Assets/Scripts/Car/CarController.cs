@@ -10,6 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(Aerodynamics))]
 [RequireComponent(typeof(Brakes))]
 [RequireComponent(typeof(Differential))]
+[RequireComponent(typeof(Steering))]
 public class CarController : MonoBehaviour
 {
     public InputManager im;
@@ -19,11 +20,11 @@ public class CarController : MonoBehaviour
     public Aerodynamics aero;
     public Brakes brakes;
     public Differential diff;
+    public Steering steer;
 
     public List<WheelCollider> throttleWheels;
     public List<WheelCollider> steeringWheels;
 
-    public float maxTurn = 20f;
     public Transform CM;
     public Rigidbody rb;
 
@@ -38,6 +39,7 @@ public class CarController : MonoBehaviour
         aero = GetComponent<Aerodynamics>();
         brakes = GetComponent<Brakes>();
         diff = GetComponent<Differential>();
+        steer = GetComponent<Steering>();
 
         if (CM)
         {
@@ -54,6 +56,7 @@ public class CarController : MonoBehaviour
         float[] wheelTorques = diff.DiffOutput(transTorque);
         float engineBrake = engine.GetEngineBrakeTorque();
         brakes.ApplyBrakes(im.brakes, engineBrake);
+        steer.ApplySteering(im.steer);
 
         //foreach(WheelCollider wheel in throttleWheels)
         //{
@@ -62,13 +65,6 @@ public class CarController : MonoBehaviour
 
         throttleWheels[0].motorTorque = wheelTorques[0];
         throttleWheels[1].motorTorque = wheelTorques[1];
-
-        foreach (WheelCollider wheel in steeringWheels)
-        {
-            wheel.steerAngle = maxTurn * im.steer;
-            wheel.gameObject.transform.localEulerAngles = new Vector3(0f, maxTurn * im.steer, 0f);
-
-        }
 
         // Apply aero drag
         aero.ApplyDrag();
