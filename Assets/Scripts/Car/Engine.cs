@@ -9,6 +9,7 @@ public class Engine : MonoBehaviour
     [SerializeField] private float MaxRPM = 7500f;
     [SerializeField] private float engineBrakingOffset = 0.0f;
     [SerializeField] private float engineBrakingCoefficient = 1.0f;
+    [SerializeField] private float clutchLockRPm = 2000f;
 
     // Should not be serialized (serialized for development purposes only and will be removed later)
     [SerializeField] private float CurrentRPM;
@@ -39,32 +40,33 @@ public class Engine : MonoBehaviour
         float immediateTorque = 0f;
 
         if (throttle <= 0f)
+        {
             return 0f;
-
-        if (CurrentRPM >= MaxRPM)
+        }
+        else if (CurrentRPM >= MaxRPM)
         {
             // Wheels shouldnt get any torque if rev limit is being hit.
             return 0f;
-
-        } else
+        }
+        else
         {
-            for(int i = 0; i < torqueCurveRPM.Length; i++)
+            for (int i = 0; i < torqueCurveRPM.Length; i++)
             {
-                if(CurrentRPM == torqueCurveRPM[i])
+                if (CurrentRPM == torqueCurveRPM[i])
                 {
                     immediateTorque = torqueCurveTorque[i] * throttle;
                     break;
                 }
 
-                if(CurrentRPM < torqueCurveRPM[i])
+                if (CurrentRPM < torqueCurveRPM[i])
                 {
                     // Calculate torque by calculating where the current rpm sits in the rpm array and use that to calculate the torque.
                     float excessRPM = CurrentRPM - torqueCurveRPM[i - 1];
                     float interval = torqueCurveRPM[i] - torqueCurveRPM[i - 1];
                     float excessPercentage = excessRPM / interval;
-                    float torqueInterval = torqueCurveTorque[i] - torqueCurveTorque[i-1];
+                    float torqueInterval = torqueCurveTorque[i] - torqueCurveTorque[i - 1];
 
-                    immediateTorque = (torqueCurveTorque[i-1] + (torqueInterval * excessPercentage)) * throttle;
+                    immediateTorque = (torqueCurveTorque[i - 1] + (torqueInterval * excessPercentage)) * throttle;
                     break;
                 }
             }

@@ -46,6 +46,7 @@ public class Transmission : MonoBehaviour
 
     public void ShiftDown()
     {
+        // Shift down only if there is a valid previous gear
         if(CurrentGear > 1)
             CurrentGear--;
     }

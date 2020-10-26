@@ -7,6 +7,7 @@ public class Wheels : MonoBehaviour
     [SerializeField] WheelCollider[] frontWheels;
     [SerializeField] WheelCollider[] rearWheels;
     [SerializeField] WheelCollider[] steeringWheels;
+    [SerializeField] WheelCollider[] throttleWheels;
 
     [SerializeField] float wheelRadiusFrontInches = 12.9921f;
     [SerializeField] float wheelRadiusRearInches = 12.9921f;

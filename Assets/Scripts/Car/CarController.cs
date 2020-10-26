@@ -58,11 +58,6 @@ public class CarController : MonoBehaviour
         brakes.ApplyBrakes(im.brakes, engineBrake);
         steer.ApplySteering(im.steer);
 
-        //foreach(WheelCollider wheel in throttleWheels)
-        //{
-        //    wheel.motorTorque = wheelTorque/throttleWheels.Count;
-        //}
-
         throttleWheels[0].motorTorque = wheelTorques[0];
         throttleWheels[1].motorTorque = wheelTorques[1];
 
