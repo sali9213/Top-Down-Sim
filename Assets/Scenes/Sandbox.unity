@@ -300,13 +300,8 @@ MonoBehaviour:
   aero: {fileID: 0}
   brakes: {fileID: 0}
   diff: {fileID: 0}
-  throttleWheels:
-  - {fileID: 219725938}
-  - {fileID: 306472663}
-  steeringWheels:
-  - {fileID: 255012491}
-  - {fileID: 674719851}
-  maxTurn: 20
+  steer: {fileID: 0}
+  wheels: {fileID: 0}
   CM: {fileID: 1387112177}
   rb: {fileID: 133529377}
 --- !u!114 &133529379
@@ -1626,6 +1621,7 @@ GameObject:
   - component: {fileID: 1313627127019720}
   - component: {fileID: 1313627127019721}
   - component: {fileID: 1313627127019722}
+  - component: {fileID: 1313627127019723}
   m_Layer: 0
   m_Name: car 1203 black
   m_TagString: Untagged
@@ -1692,6 +1688,7 @@ MonoBehaviour:
   MaxRPM: 7500
   engineBrakingOffset: 0
   engineBrakingCoefficient: 2
+  clutchLockRPm: 2000
   CurrentRPM: 0
   currentTorque: 0
   currentEngineBrakingTorque: 0
@@ -1780,6 +1777,12 @@ MonoBehaviour:
   rearWheels:
   - {fileID: 219725938}
   - {fileID: 306472663}
+  steeringWheels:
+  - {fileID: 255012491}
+  - {fileID: 674719851}
+  throttleWheels:
+  - {fileID: 219725938}
+  - {fileID: 306472663}
   wheelRadiusFrontInches: 13
   wheelRadiusRearInches: 13
 --- !u!114 &1313627127019721
@@ -1816,6 +1819,19 @@ MonoBehaviour:
   decelRamp: 0
   leftWheelTorque: 0
   rightWheelTorque: 0
+--- !u!114 &1313627127019723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313627127019714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e7807eb7be514e2288f51099803c26a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTurn: 20
 --- !u!1 &1322243114880444
 GameObject:
   m_ObjectHideFlags: 0

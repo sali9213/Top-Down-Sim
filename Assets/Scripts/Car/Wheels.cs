@@ -47,4 +47,10 @@ public class Wheels : MonoBehaviour
     {
         return steeringWheels;
     }
+
+    public void ApplyThrottleTorque(float leftTorque, float rightTorque)
+    {
+        throttleWheels[0].motorTorque = leftTorque;
+        throttleWheels[1].motorTorque = rightTorque;
+    }
 }

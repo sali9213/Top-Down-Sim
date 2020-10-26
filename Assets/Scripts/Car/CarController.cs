@@ -11,6 +11,7 @@ using UnityEngine;
 [RequireComponent(typeof(Brakes))]
 [RequireComponent(typeof(Differential))]
 [RequireComponent(typeof(Steering))]
+[RequireComponent(typeof(Wheels))]
 public class CarController : MonoBehaviour
 {
     public InputManager im;
@@ -21,9 +22,7 @@ public class CarController : MonoBehaviour
     public Brakes brakes;
     public Differential diff;
     public Steering steer;
-
-    public List<WheelCollider> throttleWheels;
-    public List<WheelCollider> steeringWheels;
+    public Wheels wheels;
 
     public Transform CM;
     public Rigidbody rb;
@@ -40,6 +39,7 @@ public class CarController : MonoBehaviour
         brakes = GetComponent<Brakes>();
         diff = GetComponent<Differential>();
         steer = GetComponent<Steering>();
+        wheels = GetComponent<Wheels>();
 
         if (CM)
         {
@@ -57,9 +57,7 @@ public class CarController : MonoBehaviour
         float engineBrake = engine.GetEngineBrakeTorque();
         brakes.ApplyBrakes(im.brakes, engineBrake);
         steer.ApplySteering(im.steer);
-
-        throttleWheels[0].motorTorque = wheelTorques[0];
-        throttleWheels[1].motorTorque = wheelTorques[1];
+        wheels.ApplyThrottleTorque(wheelTorques[0], wheelTorques[1]); 
 
         // Apply aero drag
         aero.ApplyDrag();
