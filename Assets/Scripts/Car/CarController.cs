@@ -12,6 +12,7 @@ using UnityEngine;
 [RequireComponent(typeof(Differential))]
 [RequireComponent(typeof(Steering))]
 [RequireComponent(typeof(Wheels))]
+[RequireComponent(typeof(Guage))]
 public class CarController : MonoBehaviour
 {
     public InputManager im;
@@ -23,6 +24,7 @@ public class CarController : MonoBehaviour
     public Differential diff;
     public Steering steer;
     public Wheels wheels;
+    public Guage gauge;
 
     public Transform CM;
     public Rigidbody rb;
@@ -40,6 +42,7 @@ public class CarController : MonoBehaviour
         diff = GetComponent<Differential>();
         steer = GetComponent<Steering>();
         wheels = GetComponent<Wheels>();
+        gauge = GetComponent<Guage>();
 
         if (CM)
         {

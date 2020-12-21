@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,19 +64,25 @@ public class Tyres : MonoBehaviour
             wheel.sidewaysFriction = rearSidewaysFriction;
         }
 
-        new WaitForSeconds(1);
-
-        // Rolling resistance is 30 * dragConstant.
-        rollingResistanceConstant = gameObject.GetComponent<Aerodynamics>().GetDragConstant() * 30;
+        StartCoroutine(_wait(1, ApplyRollingResistance));
     }
 
     // Apply rolling resistance to vehicle rigidbody.
     public void ApplyRollingResistance(/*WheelCollider wheel*/)
     {
+        // Rolling resistance is 30 * dragConstant.
+        rollingResistanceConstant = gameObject.GetComponent<Aerodynamics>().GetDragConstant() * 30;
+
         float vel = rb.velocity.magnitude;
         float resistanceForce = rollingResistanceConstant * vel;
         if (vel < 0.0f)
             resistanceForce = -resistanceForce;
         rb.AddRelativeForce(0.0f, 0.0f, -resistanceForce, ForceMode.Force);
+    }
+
+    private IEnumerator _wait(float time, Action callback)
+    {
+        yield return new WaitForSeconds(time);
+        callback();
     }
 }

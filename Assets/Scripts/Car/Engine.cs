@@ -12,7 +12,7 @@ public class Engine : MonoBehaviour
     [SerializeField] private float clutchLockRPm = 2000f;
 
     // Should not be serialized (serialized for development purposes only and will be removed later)
-    [SerializeField] private float CurrentRPM;
+    public float CurrentRPM { get; private set; }
     [SerializeField] private float currentTorque;
     [SerializeField] private float currentEngineBrakingTorque;
 
@@ -34,6 +34,11 @@ public class Engine : MonoBehaviour
     {
 
     }
+
+    #region getters
+    public float getMaxRPM() => MaxRPM;
+    public float getIDLERPM() => IDLERpm;
+    #endregion
 
     public float GetTorque(float throttle)
     {
