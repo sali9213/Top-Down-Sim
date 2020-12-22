@@ -9,12 +9,12 @@ public class Differential : MonoBehaviour
     [SerializeField] private float accelRamp = 1.0f;
     [SerializeField] private float decelRamp = 0.0f;
 
-    [SerializeField] private float leftWheelTorque;
-    [SerializeField] private float rightWheelTorque;
+    private Wheels wheels;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        wheels = GetComponent<Wheels>();
     }
 
     // Update is called once per frame
@@ -54,10 +54,13 @@ public class Differential : MonoBehaviour
         //wheelTorques[1] = torque / 2;
         //return wheelTorques;
 
-        // This simulates an open differential for now. I can change it later. 
-        float[] wheelTorques = new float[2];
-        wheelTorques[0] = torque / 2;
-        wheelTorques[1] = torque / 2;
+        // This simulates an open differential for now. I can change it later.
+        float[] wheelTorques = new float[4];
+        float wheelTorque = torque / wheels.DrivenWheels.Count;
+        foreach(int i in wheels.DrivenWheels)
+        {
+            wheelTorques[i] = wheelTorque;
+        }
         return wheelTorques;
 
     }

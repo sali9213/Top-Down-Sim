@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Brakes : MonoBehaviour
 {
-    [SerializeField] private WheelCollider[] frontWheels;
-    [SerializeField] private WheelCollider[] rearWheels;
-
     [SerializeField] private float brakeBias = 0.6f;
     // Deceleration in m/s
     [SerializeField] private float maxDecel = 1f;
@@ -17,8 +14,7 @@ public class Brakes : MonoBehaviour
     void Start()
     {
         wheels = gameObject.GetComponent<Wheels>();
-        frontWheels = wheels.GetFrontWheels();
-        rearWheels = wheels.GetRearWheels();
+
     }
 
     public void ApplyBrakes(float input, float engineTorque)
@@ -30,17 +26,19 @@ public class Brakes : MonoBehaviour
         float frontBrakeForce = totalBrakeForce * brakeBias;
         float rearBrakeForce = totalBrakeForce - frontBrakeForce;
 
-        float frontBrakeTorque = ((frontBrakeForce / 2) * frontWheels[0].radius) + engineTorque / 2;
-        float rearBrakeTorque = ((rearBrakeForce / 2) * rearWheels[0].radius) + engineTorque / 2;
+        float frontBrakeTorque = ((frontBrakeForce / 2) * wheels.FrontRadius) + engineTorque / 2;
+        float rearBrakeTorque = ((rearBrakeForce / 2) * wheels.RearRadius) + engineTorque / 2;
 
-        foreach (var wheel in frontWheels)
+        for(int i = 0; i < wheels.WC.Length; i++)
         {
-            wheel.brakeTorque = frontBrakeTorque;
+            if(i < 2)
+            {
+                wheels.WC[i].brakeTorque = frontBrakeTorque;
+            } else
+            {
+                wheels.WC[i].brakeTorque = rearBrakeTorque;
+            }
         }
 
-        foreach(var wheel in rearWheels)
-        {
-            wheel.brakeTorque = rearBrakeTorque;
-        }
     }
 }

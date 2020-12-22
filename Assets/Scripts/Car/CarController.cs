@@ -60,7 +60,7 @@ public class CarController : MonoBehaviour
         float engineBrake = engine.GetEngineBrakeTorque();
         brakes.ApplyBrakes(im.brakes, engineBrake);
         steer.ApplySteering(im.steer);
-        wheels.ApplyThrottleTorque(wheelTorques[0], wheelTorques[1]); 
+        wheels.ApplyThrottleTorque(wheelTorques); 
 
         // Apply aero drag
         aero.ApplyDrag();

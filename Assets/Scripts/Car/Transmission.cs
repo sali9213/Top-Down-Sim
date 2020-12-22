@@ -17,6 +17,8 @@ public class Transmission : MonoBehaviour
 
     private float[] gearRatios = new float[9];
     [SerializeField] public int CurrentGear = 1;
+
+    private Wheels wheels;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,8 @@ public class Transmission : MonoBehaviour
         gearRatios[6] = sixthGearRatio;
         gearRatios[7] = seventhGearRatio;
         gearRatios[8] = eighthGearRatio;
+
+        wheels = GetComponent<Wheels>();
     }
 
     // Update is called once per frame
@@ -58,8 +62,12 @@ public class Transmission : MonoBehaviour
 
     public float GetEngineRPM()
     {
-        WheelCollider[] wheels = GetComponent<Wheels>().GetRearWheels();
-        float wheelRPM = wheels[0].rpm > wheels[1].rpm ? wheels[0].rpm : wheels[1].rpm;
-        return wheelRPM * gearRatios[CurrentGear] * finalDrive;
+        float maxRPM = float.MinValue;
+        foreach(int i in wheels.DrivenWheels)
+        {
+            if (wheels.WC[i].rpm > maxRPM)
+                maxRPM = wheels.WC[i].rpm;
+        }
+        return maxRPM * gearRatios[CurrentGear] * finalDrive;
     }
 }

@@ -27,6 +27,9 @@ public class Guage : MonoBehaviour
         if (engine.CurrentRPM == MaxRPM)
         {
             tach.color = Color.red;
+        } else if (engine.CurrentRPM > MaxRPM - 200)
+        {
+            tach.color = Color.green;
         } else
         {
             tach.color = Color.white;
